@@ -1,30 +1,37 @@
 # coding:utf-8
 
-from PySide import QtGui, QtCore
+try:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+except:
+    from PySide2.QtGui import *
+    from PySide2.QtCore import *
+    from PySide2.QtWidgets import *
+    
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
 import pymel.all as pm
 
-class CleanUpUI(MayaQWidgetDockableMixin, QtGui.QDialog):
+class CleanUpUI(MayaQWidgetDockableMixin, QDialog):
     def __init__(self, parent=None):
         super(CleanUpUI, self).__init__(parent)
         self.setWindowTitle('Clean up tool')
         self.setFixedWidth(400)
         
-        self.main_layout = QtGui.QVBoxLayout()
+        self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0,0,0,0)
         self.main_layout.setSpacing(0)
         self.setLayout(self.main_layout)
         
-        scroll_area = QtGui.QScrollArea()
+        scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
-        scroll_area.setFocusPolicy(QtCore.Qt.NoFocus)
-        scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setFocusPolicy(Qt.NoFocus)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.main_layout.addWidget(scroll_area)
         
-        main_widget   = QtGui.QWidget()
-        widget_layout = QtGui.QVBoxLayout()
+        main_widget   = QWidget()
+        widget_layout = QVBoxLayout()
         widget_layout.setContentsMargins(0,0,0,0)
-        widget_layout.setAlignment(QtCore.Qt.AlignTop)
+        widget_layout.setAlignment(Qt.AlignTop)
         main_widget.setLayout(widget_layout)
         scroll_area.setWidget(main_widget)
         
@@ -32,27 +39,27 @@ class CleanUpUI(MayaQWidgetDockableMixin, QtGui.QDialog):
         
         widget_layout.addWidget(interpWidget)
 
-class CleanUpWidget(QtGui.QFrame):
+class CleanUpWidget(QFrame):
     def __init__(self):
         super(CleanUpWidget, self).__init__()
-        self.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
+        self.setFrameStyle(QFrame.Panel | QFrame.Raised)
         
         # Window
         self.setWindowTitle('CleanUp Widget')
         #self.setFixedHeight(400)
         
         # Layout
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         self.setLayout(layout)
         layout.setContentsMargins(5,5,5,5)
         layout.setSpacing(5)
         
         #
-        self.result = QtGui.QTextEdit()
+        self.result = QTextEdit()
         self.result.setReadOnly(True)
-        bttnLayout = QtGui.QHBoxLayout()
-        self.resetBttn = QtGui.QPushButton('Reset')
-        self.bttn = QtGui.QPushButton('Clean Up')
+        bttnLayout = QHBoxLayout()
+        self.resetBttn = QPushButton('Reset')
+        self.bttn = QPushButton('Clean Up')
         bttnLayout.addWidget(self.resetBttn)
         bttnLayout.addWidget(self.bttn)
         layout.addWidget(self.result)
@@ -65,8 +72,8 @@ class CleanUpWidget(QtGui.QFrame):
         self.result.clear()
         
     def cleanUp(self):
-        green = QtGui.QColor(123,252,0)
-        red   = QtGui.QColor(255,0,0)
+        green = QColor(123,252,0)
+        red   = QColor(255,0,0)
         
         ref = pm.ls(referencedNodes=True)
         if ref:
